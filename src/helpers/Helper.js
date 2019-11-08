@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 const secret = process.env.SECRET_KEY;
 
-class Utils {
+class Helper {
     static hashPassword(password) {
         const hashedPassword = hash(password, 8).then((hashed) => {
             return hashed;
@@ -27,4 +27,4 @@ class Utils {
     }
 }
 
-export default Utils;
+export default Helper;

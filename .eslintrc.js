@@ -1,6 +1,13 @@
 module.exports = {
     "extends": "airbnb-base",
 
+    "env": {
+        "commonjs": true,
+        "node": true,
+        "jest": true,
+        "es6": true,
+    },
+
     "rules": {
         "no-console": 0,
         "indent": ["error", 4],
@@ -8,9 +15,9 @@ module.exports = {
         "prefer-destructuring": 0,
         "arrow-body-style": 0,
         "comma-dangle": 0,
-        },
-        "env": {
-        "commonjs": true,
-        "node": true
-        },
+        "max-len": ["error", { "code": 80 }],
+        "import/no-unresolved": [2, {
+            "commonjs": true
+        }]
+    }
 };

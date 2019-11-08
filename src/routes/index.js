@@ -1,9 +1,9 @@
 import express from 'express';
-import users from './users';
+import auth from './auth';
 
 const routes = express.Router();
 
-routes.use('/api/users', users);
-routes.use('/api/admin', users);
+routes.use('/api/v1/auth', auth);
+routes.use('api/v1/auth/admin', auth);
 
 export default routes;
