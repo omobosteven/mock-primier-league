@@ -59,4 +59,9 @@ typings/
 
 # next.js build output
 .next
+
 .coveralls.yml
+
+.DS_Store
+
+.idea
