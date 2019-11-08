@@ -6,7 +6,7 @@ describe('Test root Endpoint', () => {
         const res = await request(app)
             .get('/');
         expect(res.status).toEqual(200);
-        expect(res.body.message).toBe('mock premier league!!!');
+        expect(res.body.message).toBe('mock premier league API');
         done();
     });
 

@@ -1,18 +1,23 @@
 import 'dotenv/config';
-import Utils from '../utilities/utils';
+import Helper from '../helpers/Helper';
 
-let comparePassword;
+const {
+    hashPassword,
+    comparePassword,
+    generateToken
+} = Helper;
+
+let password;
 
 describe('Test util functions', () => {
     beforeAll(async () => {
-        const password = 'testpass';
-        const hashedPassword = await Utils.hashPassword(password);
+        const hashedPassword = await hashPassword('testpass');
 
-        comparePassword = hashedPassword;
+        password = hashedPassword;
     });
 
     it('should generate token', (done) => {
-        const token = Utils.generateToken({
+        const token = generateToken({
             user: 12345,
             admin: false
         });
@@ -22,25 +27,22 @@ describe('Test util functions', () => {
     });
 
     it('should hash a password', async (done) => {
-        const password = 'testpass';
-        const hashedPassword = await Utils.hashPassword(password);
+        const hashedPassword = await hashPassword('testpass');
 
-        expect(hashedPassword).not.toBe(password);
+        expect(hashedPassword).not.toBe('testpass');
         expect(hashedPassword).toBeTruthy();
         done();
     });
 
     it('should return true if passwords matches', async (done) => {
-        const password = 'testpass';
-        const checkedPassword = await Utils.comparePassword(password, comparePassword);
+        const checkedPassword = await comparePassword('testpass', password);
 
         expect(checkedPassword).toBe(true);
         done();
     });
 
     it('should return false if passwords don\'t match', async (done) => {
-        const password = 'testpasses';
-        const checkedPassword = await Utils.comparePassword(password, comparePassword);
+        const checkedPassword = await comparePassword('testpasses', password);
 
         expect(checkedPassword).toBe(false);
         done();
