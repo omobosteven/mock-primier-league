@@ -4,9 +4,15 @@ node_js:
 
 dist: trusty
 
+services:
+  - mongodb
+
 env:
   global:
   - NODE_ENV=test
+
+before_script:
+  - sleep 15
 
 script:
   - npm test
