@@ -46,13 +46,14 @@ team.patch('/:team_id',
     checkExistingTeam,
     editTeam);
 
+team.delete('/:team_id',
+    verifyAdminRole,
+    verifyTeamWithId,
+    deleteTeam);
+
 team.get('/:team_id',
     verifyTeamWithId,
     getTeam);
-
-team.delete('/:team_id',
-    verifyTeamWithId,
-    deleteTeam);
 
 team.get('',
     getAllTeams);

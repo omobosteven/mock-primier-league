@@ -115,6 +115,34 @@ describe('Test team endpoints', () => {
         done();
     });
 
+    it('should return error if user tries to update a team', async (done) => {
+        const res = await request(app)
+            .patch(`/api/v1/teams/${team1Id}`)
+            .set('Authorization', `Bearer ${userToken}`)
+            .set('Accept', 'application/json')
+            .send({
+                name: 'test team35',
+                code: 'tstr',
+                venue_name: 'real stadium',
+                venue_capacity: 2345
+            });
+
+        expect(res.status).toEqual(403);
+        expect(res.body.message).toBe('permission denied');
+        done();
+    });
+
+    it('should return error if user tries to update a team', async (done) => {
+        const res = await request(app)
+            .delete(`/api/v1/teams/${team1Id}`)
+            .set('Authorization', `Bearer ${userToken}`)
+            .set('Accept', 'application/json');
+
+        expect(res.status).toEqual(403);
+        expect(res.body.message).toBe('permission denied');
+        done();
+    });
+
 
     it('should return error if inputs are empty', async (done) => {
         const res = await request(app)
