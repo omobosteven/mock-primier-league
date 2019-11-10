@@ -5,7 +5,9 @@ const { comparePassword } = Helper;
 
 const {
     findUser,
-    findUserWithUsername
+    findUserWithUsername,
+    findTeam,
+    findTeamById
 } = FindResource;
 
 class Checker {
@@ -20,18 +22,36 @@ class Checker {
 
                 return res.status(409).send({
                     status: 409,
-                    message: 'error',
-                    data: { [field]: `${field} already exist` }
+                    message: `${field} already exist`
                 });
             }
 
             return next();
         } catch (error) {
             /* istanbul ignore next */
-            return res.status(500).json({
-                status: 500,
-                message: 'internal server error'
-            });
+            return next(error);
+        }
+    }
+
+    static async checkExistingTeam(req, res, next) {
+        try {
+            const { name, code } = req.teamInput;
+            const existingTeam = await findTeam(name, code);
+
+            if (existingTeam) {
+                const field = existingTeam.name === name
+                    ? 'name' : 'code';
+
+                return res.status(409).send({
+                    status: 409,
+                    message: `team ${field} already exist`
+                });
+            }
+
+            return next();
+        } catch (error) {
+            /* istanbul ignore next */
+            return next(error);
         }
     }
 
@@ -43,7 +63,7 @@ class Checker {
             if (!user) {
                 return res.status(400).send({
                     status: 400,
-                    error: 'wrong username or password'
+                    message: 'wrong username or password'
                 });
             }
 
@@ -54,7 +74,7 @@ class Checker {
             if (!passwordMatched) {
                 return res.status(400).send({
                     status: 400,
-                    error: 'wrong username or password'
+                    message: 'wrong username or password'
                 });
             }
 
@@ -62,10 +82,40 @@ class Checker {
             return next();
         } catch (error) {
             /* istanbul ignore next */
-            return res.status(500).json({
-                status: 500,
-                message: 'internal server error'
+            return next(error);
+        }
+    }
+
+    static verifyAdminRole(req, res, next) {
+        const { admin } = req.user;
+
+        if (!admin) {
+            return res.status(403).send({
+                status: 403,
+                message: 'permission denied'
             });
+        }
+
+        return next();
+    }
+
+    static async verifyTeamWithId(req, res, next) {
+        try {
+            const { team_id: teamId } = req.params;
+
+            const team = await findTeamById(teamId);
+
+            if (!team) {
+                return res.status(404).send({
+                    status: 404,
+                    message: 'team does not exist'
+                });
+            }
+            req.team = team;
+            return next();
+        } catch (error) {
+            /* istanbul ignore next */
+            return next(error);
         }
     }
 }

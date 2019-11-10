@@ -11,17 +11,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => res.status(200).send({
-    status: 'success',
-    message: 'mock premier league API'
-}));
-
 app.use(routes);
 
-app.use((req, res) => {
+app.use((req, res, next) => {
     return res.status(404).send({
-        status: 'error',
+        status: 400,
         message: `Route ${req.method} ${req.url} not found.`
+    });
+});
+
+app.use((err, req, res, next) => {
+    return res.status(500).send({
+        status: 500,
+        message: 'internal server error'
     });
 });
 
