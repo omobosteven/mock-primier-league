@@ -25,6 +25,15 @@ class Helper {
 
         return token;
     }
+
+    static removeExtraWhiteSpaces(payload) {
+        Object.keys(payload).forEach((key) => {
+            if (typeof (payload[key]) === 'string') {
+                payload[key] = payload[key].replace(/\s+/g, ' ').trim();
+            }
+        });
+        return payload;
+    }
 }
 
 export default Helper;

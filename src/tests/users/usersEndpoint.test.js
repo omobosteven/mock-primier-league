@@ -2,14 +2,13 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import app from '../../app';
 import models from '../../models';
+import testData from '../testData';
 
 const { User } = models;
 
-const user = {
-    username: 'testuser',
-    email: 'test@test.com',
-    password: 'password'
-};
+const {
+    user,
+} = testData;
 
 describe('Test auth Endpoint', () => {
     beforeAll(async () => {
@@ -19,7 +18,7 @@ describe('Test auth Endpoint', () => {
 
     afterAll((done) => {
         mongoose.disconnect();
-        return done();
+        done();
     });
 
     it('should signup a user successfully', async (done) => {
@@ -47,7 +46,7 @@ describe('Test auth Endpoint', () => {
                 password: 'password'
             });
         expect(res.status).toEqual(409);
-        expect(res.body.data.username).toBe('username already exist');
+        expect(res.body.message).toBe('username already exist');
         done();
     });
 
@@ -58,8 +57,8 @@ describe('Test auth Endpoint', () => {
             .send({
             });
         expect(res.status).toEqual(400);
-        expect(res.body.error[0].message).toBe('username is required');
-        expect(res.body.error[1].message).toBe('email is required');
+        expect(res.body.errors[0].message).toBe('username is required');
+        expect(res.body.errors[1].message).toBe('email is required');
         done();
     });
 
@@ -73,7 +72,7 @@ describe('Test auth Endpoint', () => {
                 password: 'passw'
             });
         expect(res.status).toEqual(400);
-        expect(res.body.error[0].message).toBe('password is too short');
+        expect(res.body.errors[0].message).toBe('password is too short');
         done();
     });
 
@@ -90,7 +89,7 @@ describe('Test auth Endpoint', () => {
         done();
     });
 
-    it('should return error is username is wrong', async (done) => {
+    it('should return error if username is wrong', async (done) => {
         const res = await request(app)
             .post('/api/v1/auth/login')
             .set('Accept', 'application/json')
@@ -99,12 +98,12 @@ describe('Test auth Endpoint', () => {
                 password: 'password'
             });
         expect(res.status).toEqual(400);
-        expect(res.body.error).toBe('wrong username or password');
+        expect(res.body.message).toBe('wrong username or password');
         done();
     });
 
 
-    it('should return error is password is wrong', async (done) => {
+    it('should return error if password is wrong', async (done) => {
         const res = await request(app)
             .post('/api/v1/auth/login')
             .set('Accept', 'application/json')
@@ -113,7 +112,7 @@ describe('Test auth Endpoint', () => {
                 password: 'password2'
             });
         expect(res.status).toEqual(400);
-        expect(res.body.error).toBe('wrong username or password');
+        expect(res.body.message).toBe('wrong username or password');
         done();
     });
 
@@ -127,8 +126,8 @@ describe('Test auth Endpoint', () => {
                 password: ''
             });
         expect(res.status).toEqual(400);
-        expect(res.body.error[0].message).toBe('username is required');
-        expect(res.body.error[1].message).toBe('password is required');
+        expect(res.body.errors[0].message).toBe('username is required');
+        expect(res.body.errors[1].message).toBe('password is required');
         done();
     });
 });
