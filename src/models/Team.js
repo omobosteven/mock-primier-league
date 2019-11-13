@@ -6,6 +6,7 @@ const teamSchema = new Schema({
     name: {
         type: String,
         unique: true,
+        lowercase: true,
         required: true
     },
     code: {
@@ -16,6 +17,7 @@ const teamSchema = new Schema({
     },
     venue_name: {
         type: String,
+        lowercase: true,
         required: true
     },
     venue_capacity: {

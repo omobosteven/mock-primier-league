@@ -152,8 +152,14 @@ class FixtureController {
     static async getAllFixtures(req, res, next) {
         try {
             const data = await Fixture.find()
-                .populate('home_team', 'name code')
-                .populate('away_team', 'name code');
+                .populate({
+                    path: 'home_team',
+                    select: 'name code',
+                })
+                .populate({
+                    path: 'away_team',
+                    select: 'name code'
+                });
             return res.status(200).send({
                 status: 200,
                 message: 'fixtures retrieved successfully',
