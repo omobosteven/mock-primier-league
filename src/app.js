@@ -20,7 +20,7 @@ app.use((req, res, next) => {
     });
 });
 
-app.use((err, req, res, next) => {
+app.use((error, req, res, next) => {
     return res.status(500).send({
         status: 500,
         message: 'internal server error'

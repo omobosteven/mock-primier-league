@@ -1,13 +1,16 @@
 import FindResource from '../services/FindResource';
 import Helper from '../helpers/Helper';
+import models from '../models';
 
 const { comparePassword } = Helper;
+const { Team, Fixture } = models;
 
 const {
     findUser,
     findUserWithUsername,
     findTeam,
-    findTeamById
+    findDocumentById,
+    findFixtureByHomeAwayIds
 } = FindResource;
 
 class Checker {
@@ -103,7 +106,7 @@ class Checker {
         try {
             const { team_id: teamId } = req.params;
 
-            const team = await findTeamById(teamId);
+            const team = await findDocumentById(teamId, Team);
 
             if (!team) {
                 return res.status(404).send({
@@ -117,6 +120,75 @@ class Checker {
             /* istanbul ignore next */
             return next(error);
         }
+    }
+
+
+    static async verifyFixtureWithId(req, res, next) {
+        try {
+            const { fixture_id: fixtureId } = req.params;
+
+            const fixture = await findDocumentById(fixtureId, Fixture);
+
+            if (!fixture) {
+                return res.status(404).send({
+                    status: 404,
+                    message: 'fixture does not exist'
+                });
+            }
+            req.fixture = fixture;
+            return next();
+        } catch (error) {
+            /* istanbul ignore next */
+            return next(error);
+        }
+    }
+
+    static async checkHomeAwayTeamExist(req, res, next) {
+        try {
+            const {
+                home_team: homeTeamId,
+                away_team: awayTeamId
+            } = req.fixtureInput;
+
+            if (!homeTeamId && !awayTeamId) {
+                return next();
+            }
+
+            const homeTeam = await findDocumentById(homeTeamId, Team);
+            const awayTeam = await findDocumentById(awayTeamId, Team);
+
+            if (!homeTeam || !awayTeam) {
+                const team = !homeTeam ? 'home' : 'away';
+
+                return res.status(404).send({
+                    status: 404,
+                    message: `${team} team does not exist`
+                });
+            }
+
+            return next();
+        } catch (error) {
+            /* istanbul ignore next */
+            return next(error);
+        }
+    }
+
+    static async checkDuplicateFixture(req, res, next) {
+        const {
+            home_team: homeTeamId,
+            away_team: awayTeamId,
+        } = req.fixtureInput;
+
+        const fixture = await findFixtureByHomeAwayIds(homeTeamId, awayTeamId);
+
+        if (fixture) {
+            return res.status(409).send({
+                status: 409,
+                message: 'similar fixture has not been completed'
+            });
+        }
+
+        return next();
     }
 }
 

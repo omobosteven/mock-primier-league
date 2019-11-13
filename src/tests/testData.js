@@ -25,8 +25,15 @@ const teamTest2 = {
     venue_capacity: 23456
 };
 
+const teamTest3 = {
+    name: 'test team3',
+    code: 'tst3',
+    venue_name: 'test stadium',
+    venue_capacity: 23456
+};
+
 const testData = {
-    user, admin, teamTest1, teamTest2
+    user, admin, teamTest1, teamTest2, teamTest3
 };
 
 export default testData;
