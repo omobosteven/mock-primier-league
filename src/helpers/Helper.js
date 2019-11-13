@@ -34,6 +34,10 @@ class Helper {
         });
         return payload;
     }
+
+    static replaceWhiteSpacesWithHyphen(payload) {
+        return payload.replace(/\s+/g, '-').trim();
+    }
 }
 
 export default Helper;

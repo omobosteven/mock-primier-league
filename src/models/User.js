@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 import Helper from '../helpers/Helper';
 
+const { Schema } = mongoose;
+
 const {
     hashPassword
 } = Helper;
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     username: {
         type: String,
         lowercase: true,
