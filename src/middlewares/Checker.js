@@ -3,21 +3,21 @@ import Helper from '../helpers/Helper';
 import models from '../models';
 
 const { comparePassword } = Helper;
-const { Team, Fixture } = models;
+const { User, Team, Fixture } = models;
 
 const {
-    findUser,
     findUserWithUsername,
-    findTeam,
     findDocumentById,
-    findFixtureByHomeAwayIds
+    findFixtureByHomeAwayIds,
+    findDocument
 } = FindResource;
 
 class Checker {
     static async checkExistingUsernameEmail(req, res, next) {
         try {
             const { username, email } = req.userInput;
-            const existingUser = await findUser(email, username);
+            const existingUser = await findDocument(User,
+                { email }, { username });
 
             if (existingUser) {
                 const field = existingUser.username === username
@@ -39,7 +39,8 @@ class Checker {
     static async checkExistingTeam(req, res, next) {
         try {
             const { name, code } = req.teamInput;
-            const existingTeam = await findTeam(name, code);
+            const existingTeam = await findDocument(Team,
+                { name }, { code });
 
             if (existingTeam) {
                 const field = existingTeam.name === name

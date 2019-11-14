@@ -36,7 +36,11 @@ class Helper {
     }
 
     static replaceWhiteSpacesWithHyphen(payload) {
-        return payload.replace(/\s+/g, '-').trim();
+        if (typeof (payload) === 'string') {
+            return payload.trim().replace(/\s+/g, '-');
+        }
+
+        return payload;
     }
 }
 

@@ -1,28 +1,16 @@
 import mongoose from 'mongoose';
 import models from '../models';
 
-const { User, Team, Fixture } = models;
+const { User, Fixture } = models;
 const { ObjectId } = mongoose.Types;
 
 class FindResource {
-    static async findUser(email, username) {
+    static async findDocument(model, param1, param2) {
         try {
-            const user = await User.findOne({
-                $or: [{ email }, { username }]
+            const document = await model.findOne({
+                $or: [param1, param2]
             });
-            return user;
-        } catch (error) {
-            /* istanbul ignore next */
-            return error;
-        }
-    }
-
-    static async findTeam(name, code) {
-        try {
-            const team = await Team.findOne({
-                $or: [{ name }, { code }]
-            });
-            return team;
+            return document;
         } catch (error) {
             /* istanbul ignore next */
             return error;

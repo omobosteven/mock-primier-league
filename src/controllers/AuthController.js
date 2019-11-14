@@ -29,6 +29,7 @@ class AuthController {
                 status: 201,
                 message: 'registration successful',
                 data: {
+                    is_admin: isAdmin,
                     token: `Bearer ${token}`
                 }
             });
@@ -51,6 +52,7 @@ class AuthController {
                 status: 200,
                 message: 'login successful',
                 data: {
+                    is_admin: isAdmin,
                     token: `Bearer ${token}`
                 }
             });
