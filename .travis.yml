@@ -6,6 +6,7 @@ dist: trusty
 
 services:
   - mongodb
+  - redis-server
 
 env:
   global:

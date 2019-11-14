@@ -4,6 +4,7 @@ import Checker from '../middlewares/Checker';
 import TeamInputValidation from
     '../middlewares/validations/TeamInputValidation';
 import TeamController from '../controllers/TeamController';
+import limiter from '../middlewares/rateLimit';
 
 const team = express.Router();
 
@@ -52,10 +53,12 @@ team.delete('/:team_id',
     deleteTeam);
 
 team.get('/:team_id',
+    limiter,
     verifyTeamWithId,
     getTeam);
 
 team.get('',
+    limiter,
     getAllTeams);
 
 export default team;

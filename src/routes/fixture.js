@@ -4,6 +4,7 @@ import Checker from '../middlewares/Checker';
 import FixtureInputValidation from
     '../middlewares/validations/FixtureInputValidation';
 import FixtureController from '../controllers/FixtureController';
+import limiter from '../middlewares/rateLimit';
 
 const fixture = express.Router();
 
@@ -57,18 +58,22 @@ fixture.delete('/:fixture_id',
     deleteFixture);
 
 fixture.get('/pending',
+    limiter,
     getPendingCompletedFixtures,
     getAllFixtures);
 
 fixture.get('/completed',
+    limiter,
     getPendingCompletedFixtures,
     getAllFixtures);
 
 fixture.get('/:fixture_id',
+    limiter,
     verifyFixtureWithId,
     getFixture);
 
 fixture.get('',
+    limiter,
     getAllFixtures);
 
 export default fixture;
