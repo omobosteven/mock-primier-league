@@ -16,7 +16,7 @@ class UserInputValidation {
         const rules = {
             username: 'required|alpha_numeric|min:2|max:20',
             email: 'required|email',
-            password: 'required|min:6'
+            password: 'required|min:8'
         };
 
         const sanitization = {
@@ -30,7 +30,7 @@ class UserInputValidation {
             'username.min': 'username is less than 2 character',
             'username.max': 'username is greater than 20 character',
             'email.email': 'enter a valid email address',
-            'password.min': 'password is too short',
+            'password.min': 'password is less than 8 characters',
         };
 
         const inputData = removeExtraWhiteSpaces(req.body);

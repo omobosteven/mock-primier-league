@@ -6,7 +6,8 @@ const {
     comparePassword,
     generateToken,
     replaceWhiteSpacesWithHyphen,
-    removeExtraWhiteSpaces
+    removeExtraWhiteSpaces,
+    verifyMongooseObjectId
 } = Helper;
 
 let password;
@@ -77,6 +78,15 @@ describe('Test helper functions', () => {
         expect(trimmedPayload.name).toBe('test me');
         expect(trimmedPayload.code).toBe('test');
         expect(trimmedPayload.capacity).toBe(2345);
+        done();
+    });
+
+    it('should return a value if ObjectId is valid', (done) => {
+        const id = '12345fdbdmfndn';
+
+        const documentId = verifyMongooseObjectId(id);
+
+        expect(documentId).toBeUndefined();
         done();
     });
 });

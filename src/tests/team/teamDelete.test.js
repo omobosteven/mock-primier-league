@@ -51,6 +51,7 @@ describe('Test team endpoints', () => {
         expect(res.status).toEqual(200);
         expect(res.body.message).toBe('team deleted successfully');
         expect(res.body.data.name).toBe('test team1');
+        expect(await Team.countDocuments()).toBe(1);
         done();
     });
 

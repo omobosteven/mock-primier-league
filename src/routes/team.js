@@ -10,7 +10,7 @@ const team = express.Router();
 
 const {
     verifyAdminRole,
-    checkExistingTeam,
+    checkDuplicateTeam,
     verifyTeamWithId
 } = Checker;
 
@@ -37,14 +37,14 @@ team.use(checkTokenExist, verifyToken);
 team.post('',
     verifyAdminRole,
     validateCreateTeamInput,
-    checkExistingTeam,
+    checkDuplicateTeam,
     createTeam);
 
 team.patch('/:team_id',
     verifyAdminRole,
     verifyTeamWithId,
     validateUpdateTeamInput,
-    checkExistingTeam,
+    checkDuplicateTeam,
     editTeam);
 
 team.delete('/:team_id',

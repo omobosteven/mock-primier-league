@@ -28,7 +28,7 @@ class TeamController {
             } = req.teamInput;
 
             const {
-                _id, name: nameData, code: codeData,
+                id, name: nameData, code: codeData,
                 venue_name: venueNameData, venue_capacity: venueCapacityData
             } = req.team;
 
@@ -39,7 +39,7 @@ class TeamController {
                 venue_capacity: venueCapacityInput || venueCapacityData
             };
 
-            const team = await Team.findByIdAndUpdate(_id, teamUpdateData, {
+            const team = await Team.findByIdAndUpdate(id, teamUpdateData, {
                 new: true
             });
             team.save();

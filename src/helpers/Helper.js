@@ -1,5 +1,8 @@
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+
+const { ObjectId } = mongoose.Types;
 
 const secret = process.env.SECRET_KEY;
 
@@ -41,6 +44,17 @@ class Helper {
         }
 
         return payload;
+    }
+
+    static verifyMongooseObjectId(id) {
+        const isValidId = ObjectId.isValid(id);
+        let documentId;
+
+        if (isValidId) {
+            documentId = ObjectId(id);
+        }
+
+        return documentId;
     }
 }
 

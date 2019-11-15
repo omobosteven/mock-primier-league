@@ -12,8 +12,8 @@ const {
 } = UserInputValidation;
 
 const {
-    checkExistingUsernameEmail,
-    checkUserUsernamePassword
+    checkDuplicateUser,
+    checkUsernamePassword
 } = Checker;
 
 const {
@@ -22,12 +22,12 @@ const {
 
 auth.post('/register',
     validateSignupInput,
-    checkExistingUsernameEmail,
+    checkDuplicateUser,
     signupUser);
 
 auth.post('/login',
     validateLoginInput,
-    checkUserUsernamePassword,
+    checkUsernamePassword,
     Users.loginUser);
 
 export default auth;

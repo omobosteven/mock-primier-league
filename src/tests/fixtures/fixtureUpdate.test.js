@@ -9,7 +9,7 @@ const { User, Team, Fixture } = models;
 const { generateToken } = Helper;
 
 const {
-    user, admin, teamTest1, teamTest2,
+    user, admin, teamTest1, teamTest2
 } = testData;
 
 let userToken;
@@ -17,6 +17,7 @@ let adminToken;
 let team1Id;
 let team2Id;
 let fixture1Id;
+let fixture2Id;
 
 describe('Test update fixture endpoints', () => {
     beforeEach(async () => {
@@ -37,8 +38,15 @@ describe('Test update fixture endpoints', () => {
             event_date: new Date('2019-10-02T17:00'),
             event_link: 'api/fixtures/test_team1_vs_test_team2/id'
         });
+        const fixture2 = await Fixture.create({
+            home_team: team2Id,
+            away_team: team1Id,
+            event_date: new Date('2019-11-02T17:00'),
+            event_link: 'api/fixtures/test_team2_vs_test_team2/id'
+        });
 
         fixture1Id = fixture1.id;
+        fixture2Id = fixture2.id;
 
         userToken = generateToken({
             user: testUser.id,
@@ -95,7 +103,7 @@ describe('Test update fixture endpoints', () => {
 
     it('should not create duplicate fixture', async (done) => {
         const res = await request(app)
-            .patch(`/api/v1/fixtures/${fixture1Id}`)
+            .patch(`/api/v1/fixtures/${fixture2Id}`)
             .set('Authorization', `Bearer ${adminToken}`)
             .set('Accept', 'application/json')
             .send({
@@ -108,7 +116,7 @@ describe('Test update fixture endpoints', () => {
         done();
     });
 
-    it('should require home team input if away team is exists', 
+    it('should require home team input if away team is exists',
         async (done) => {
             const res = await request(app)
                 .patch(`/api/v1/fixtures/${fixture1Id}`)

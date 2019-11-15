@@ -18,10 +18,11 @@ class AuthController {
             };
 
             const user = new User(userPayload);
-            const { _id, is_admin: isAdmin } = await user.save();
+            user.save();
+            const { id, is_admin: isAdmin } = user;
 
             const token = generateToken({
-                user: _id,
+                user: id,
                 admin: isAdmin
             });
 
@@ -40,11 +41,11 @@ class AuthController {
     }
 
     static async loginUser(req, res, next) {
-        const { _id, is_admin: isAdmin } = req.user;
+        const { id, is_admin: isAdmin } = req.user;
 
         try {
             const token = generateToken({
-                user: _id,
+                user: id,
                 admin: isAdmin
             });
 

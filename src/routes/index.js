@@ -8,6 +8,7 @@ import search from './search';
 const routes = express.Router();
 
 routes.use('/', root);
+routes.use('/api/v1/', root);
 routes.use('/api/v1/auth', auth);
 routes.use('/api/v1/auth/admin', auth);
 routes.use('/api/v1/teams', team);

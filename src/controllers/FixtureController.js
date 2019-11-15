@@ -36,9 +36,9 @@ class FixtureController {
                 fixture.away_team.name
             );
 
-            const eventLink = `/api/fixtures/${homeTeam
+            fixture.event_link = `/api/fixtures/${homeTeam
             }-vs-${awayTeam}/${fixture.id}`;
-            fixture.event_link = eventLink;
+
             fixture.save();
 
             return res.status(201).send({
@@ -98,9 +98,8 @@ class FixtureController {
                 fixture.away_team.name
             );
 
-            const eventLink = `/api/fixtures/${homeTeam
+            fixture.event_link = `/api/fixtures/${homeTeam
             }-vs-${awayTeam}/${fixture.id}`;
-            fixture.event_link = eventLink;
 
             fixture.save();
 
