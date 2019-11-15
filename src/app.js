@@ -13,14 +13,14 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(routes);
 
-app.use((req, res, next) => {
+app.use((req, res) => {
     return res.status(404).send({
         status: 400,
         message: `Route ${req.method} ${req.url} not found.`
     });
 });
 
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
     console.log(error.message);
     return res.status(500).send({
         status: 500,

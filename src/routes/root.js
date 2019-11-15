@@ -3,7 +3,7 @@ import express from 'express';
 const root = express.Router();
 
 root.get('', (req, res) => res.status(200).send({
-    status: 'success',
+    status: 200,
     message: 'mock premier league API'
 }));
 

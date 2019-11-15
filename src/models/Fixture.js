@@ -43,6 +43,11 @@ const fixtureSchema = new Schema({
     }
 });
 
+fixtureSchema.index({ home_team: 1, away_team: 1 }, {
+    unique: true,
+    partialFilterExpression: { status: 'pending' }
+});
+
 const Fixture = mongoose.model('Fixture', fixtureSchema);
 
 export default Fixture;

@@ -1,26 +1,23 @@
-import FindResource from '../services/FindResource';
 import Helper from '../helpers/Helper';
 import models from '../models';
 
-const { comparePassword } = Helper;
+const {
+    comparePassword,
+    verifyMongooseObjectId
+} = Helper;
 const { User, Team, Fixture } = models;
 
-const {
-    findUserWithUsername,
-    findDocumentById,
-    findFixtureByHomeAwayIds,
-    findDocument
-} = FindResource;
 
 class Checker {
-    static async checkExistingUsernameEmail(req, res, next) {
+    static async checkDuplicateUser(req, res, next) {
         try {
             const { username, email } = req.userInput;
-            const existingUser = await findDocument(User,
-                { email }, { username });
+            const userExist = await User.findOne({
+                $or: [{ email }, { username }]
+            });
 
-            if (existingUser) {
-                const field = existingUser.username === username
+            if (userExist) {
+                const field = userExist.username === username
                     ? 'username' : 'email';
 
                 return res.status(409).send({
@@ -36,14 +33,20 @@ class Checker {
         }
     }
 
-    static async checkExistingTeam(req, res, next) {
+    static async checkDuplicateTeam(req, res, next) {
         try {
             const { name, code } = req.teamInput;
-            const existingTeam = await findDocument(Team,
-                { name }, { code });
+            const { team_id: teamId } = req.params;
 
-            if (existingTeam) {
-                const field = existingTeam.name === name
+            const teamExist = await Team.findOne({
+                $or: [
+                    { name, _id: { $ne: teamId } },
+                    { code, _id: { $ne: teamId } }
+                ]
+            });
+
+            if (teamExist) {
+                const field = teamExist.name === name
                     ? 'name' : 'code';
 
                 return res.status(409).send({
@@ -59,23 +62,48 @@ class Checker {
         }
     }
 
-    static async checkUserUsernamePassword(req, res, next) {
+    static async checkDuplicateFixture(req, res, next) {
         try {
-            const { username, password } = req.userInput;
-            const user = await findUserWithUsername(username);
+            const {
+                fixture_id: fixtureId
+            } = req.params;
 
-            if (!user) {
-                return res.status(400).send({
-                    status: 400,
-                    message: 'wrong username or password'
+            const {
+                home_team: homeTeamId,
+                away_team: awayTeamId
+            } = req.fixtureInput;
+
+            const fixture = await Fixture.findOne({
+                $and: [
+                    { home_team: homeTeamId },
+                    { away_team: awayTeamId },
+                    { status: 'pending', _id: { $ne: fixtureId } }
+                ]
+            });
+
+            if (fixture) {
+                return res.status(409).send({
+                    status: 409,
+                    message: 'similar fixture has not been completed'
                 });
             }
 
-            const passwordMatched = await comparePassword(
+            return next();
+        } catch (error) {
+            /* istanbul ignore next */
+            return next(error);
+        }
+    }
+
+    static async checkUsernamePassword(req, res, next) {
+        try {
+            const { username, password } = req.userInput;
+            const user = await User.findOne({ username });
+            const passwordMatched = user && await comparePassword(
                 password, user.password
             );
 
-            if (!passwordMatched) {
+            if (!user || !passwordMatched) {
                 return res.status(400).send({
                     status: 400,
                     message: 'wrong username or password'
@@ -106,8 +134,9 @@ class Checker {
     static async verifyTeamWithId(req, res, next) {
         try {
             const { team_id: teamId } = req.params;
+            const documentId = verifyMongooseObjectId(teamId);
 
-            const team = await findDocumentById(teamId, Team);
+            const team = await Team.findById(documentId);
 
             if (!team) {
                 return res.status(404).send({
@@ -123,12 +152,14 @@ class Checker {
         }
     }
 
-
     static async verifyFixtureWithId(req, res, next) {
         try {
             const { fixture_id: fixtureId } = req.params;
+            const documentId = verifyMongooseObjectId(fixtureId);
 
-            const fixture = await findDocumentById(fixtureId, Fixture);
+            const fixture = await Fixture.findById(documentId)
+                .populate('home_team', 'name code')
+                .populate('away_team', 'name code');
 
             if (!fixture) {
                 return res.status(404).send({
@@ -155,8 +186,11 @@ class Checker {
                 return next();
             }
 
-            const homeTeam = await findDocumentById(homeTeamId, Team);
-            const awayTeam = await findDocumentById(awayTeamId, Team);
+            const homeTeamDocumentId = verifyMongooseObjectId(homeTeamId);
+            const awayTeamDocumentId = verifyMongooseObjectId(awayTeamId);
+
+            const homeTeam = await Team.findById(homeTeamDocumentId);
+            const awayTeam = await Team.findById(awayTeamDocumentId);
 
             if (!homeTeam || !awayTeam) {
                 const team = !homeTeam ? 'home' : 'away';
@@ -172,24 +206,6 @@ class Checker {
             /* istanbul ignore next */
             return next(error);
         }
-    }
-
-    static async checkDuplicateFixture(req, res, next) {
-        const {
-            home_team: homeTeamId,
-            away_team: awayTeamId,
-        } = req.fixtureInput;
-
-        const fixture = await findFixtureByHomeAwayIds(homeTeamId, awayTeamId);
-
-        if (fixture) {
-            return res.status(409).send({
-                status: 409,
-                message: 'similar fixture has not been completed'
-            });
-        }
-
-        return next();
     }
 }
 

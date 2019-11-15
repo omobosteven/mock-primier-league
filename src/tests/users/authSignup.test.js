@@ -88,7 +88,8 @@ describe('Test auth Endpoint', () => {
                 password: 'passw'
             });
         expect(res.status).toEqual(400);
-        expect(res.body.errors[0].message).toBe('password is too short');
+        expect(res.body.errors[0].message)
+            .toBe('password is less than 8 characters');
         done();
     });
 });
