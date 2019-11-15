@@ -52,7 +52,6 @@
   "jest": {
     "testEnvironment": "node",
     "collectCoverage": true,
-    "testTimeout": 10000,
     "setupFiles": ["./src/tests/setUpTest.js"],
     "coveragePathIgnorePatterns": [
       "/node_modules/"

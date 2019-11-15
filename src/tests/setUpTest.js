@@ -1,2 +1,2 @@
-process.env.RATE_LIMIT_MAX = 100;
-process.env.RATE_LIMIT_MINUTES = 60;
+process.env.RATE_LIMIT_MAX = null;
+process.env.RATE_LIMIT_MINUTES = null;

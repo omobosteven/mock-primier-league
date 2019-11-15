@@ -41,7 +41,7 @@ class AuthController {
     }
 
     static async loginUser(req, res, next) {
-        const { id, is_admin: isAdmin } = req.user;
+        const { id, is_admin: isAdmin } = req.decodedUser;
 
         try {
             const token = generateToken({

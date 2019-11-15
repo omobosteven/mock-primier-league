@@ -6,6 +6,10 @@ const client = new Redis(process.env.REDIS_URL);
 const max = parseInt(process.env.RATE_LIMIT_MAX, 10) || 20;
 const minutesBeforeLimit = parseInt(process.env.RATE_LIMIT_MINUTES, 10) || 1;
 
+client.on('error', (err) => {
+    console.log(`Something went wrong with Redis ${err}`);
+});
+
 
 const limiter = rateLimit({
     store: new RedisStore({
@@ -16,21 +20,21 @@ const limiter = rateLimit({
     skip: (req) => {
         const {
             admin
-        } = req.user;
+        } = req.decodedUser;
 
         return admin;
     },
     keyGenerator: (req) => {
         const {
             user
-        } = req.user;
+        } = req.decodedUser;
 
         return user;
     },
     handler: (req, res) => {
         return res.status(429).send({
             status: 429,
-            message: 'Too many request, please try again later.'
+            message: 'Too many request, please try again later'
         });
     }
 });
