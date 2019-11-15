@@ -28,7 +28,7 @@ class Authenticate {
                 });
             }
 
-            req.user = user;
+            req.decodedUser = user;
             return next();
         });
     }

@@ -110,7 +110,7 @@ class Checker {
                 });
             }
 
-            req.user = user;
+            req.decodedUser = user;
             return next();
         } catch (error) {
             /* istanbul ignore next */
@@ -119,7 +119,7 @@ class Checker {
     }
 
     static verifyAdminRole(req, res, next) {
-        const { admin } = req.user;
+        const { admin } = req.decodedUser;
 
         if (!admin) {
             return res.status(403).send({
