@@ -36,7 +36,7 @@ class FixtureController {
                 fixture.away_team.name
             );
 
-            fixture.event_link = `/api/fixtures/${homeTeam
+            fixture.event_link = `/api/v1/fixtures/${homeTeam
             }-vs-${awayTeam}/${fixture.id}`;
 
             fixture.save();
@@ -98,7 +98,7 @@ class FixtureController {
                 fixture.away_team.name
             );
 
-            fixture.event_link = `/api/fixtures/${homeTeam
+            fixture.event_link = `/api/v1/fixtures/${homeTeam
             }-vs-${awayTeam}/${fixture.id}`;
 
             fixture.save();

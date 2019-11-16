@@ -67,6 +67,11 @@ fixture.get('/:fixture_id',
     verifyFixtureWithId,
     getFixture);
 
+fixture.get('/*-vs-*/:fixture_id',
+    limiter,
+    verifyFixtureWithId,
+    getFixture);
+
 fixture.get('',
     limiter,
     validateFixturesQueryParams,
