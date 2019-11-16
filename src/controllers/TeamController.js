@@ -7,7 +7,7 @@ class TeamController {
         try {
             const teamData = req.teamInput;
             const team = new Team(teamData);
-            team.save();
+            await team.save();
 
             return res.status(201).send({
                 status: 201,
@@ -42,7 +42,7 @@ class TeamController {
             const team = await Team.findByIdAndUpdate(id, teamUpdateData, {
                 new: true
             });
-            team.save();
+            await team.save();
 
             return res.status(200).send({
                 status: 200,

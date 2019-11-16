@@ -18,7 +18,7 @@ class AuthController {
             };
 
             const user = new User(userPayload);
-            user.save();
+            await user.save();
             const { id, is_admin: isAdmin } = user;
 
             const token = generateToken({

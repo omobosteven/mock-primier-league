@@ -37,7 +37,6 @@ const {
     getFixture,
     getAllFixtures,
     deleteFixture,
-    getPendingCompletedFixtures
 } = FixtureController;
 
 fixture.use(checkTokenExist, verifyToken);

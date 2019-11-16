@@ -35,22 +35,19 @@ describe('Test retrieve fixture endpoints', () => {
         const fixture1 = await Fixture.create({
             home_team: team1Id,
             away_team: team2Id,
-            event_date: new Date('2019-10-02T17:00'),
-            event_link: 'api/fixtures/test_team1_vs_test_team2/id'
+            event_date: new Date('2019-10-02T17:00')
         });
         await Fixture.create({
             home_team: team1Id,
             away_team: team3Id,
-            event_date: new Date('2019-10-02T17:00'),
-            event_link: 'api/fixtures/test_team1_vs_test_team3/id'
+            event_date: new Date('2019-10-02T17:00')
         });
         await Fixture.create({
             home_team: team2Id,
             away_team: team3Id,
             home_team_goal: 3,
             status: 'completed',
-            event_date: new Date('2019-10-02T17:00'),
-            event_link: 'api/fixtures/test_team2_vs_test_team3/id'
+            event_date: new Date('2019-10-02T17:00')
         });
 
         fixture1Id = fixture1.id;

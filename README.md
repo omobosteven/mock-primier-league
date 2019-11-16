@@ -42,7 +42,7 @@ An API that serves the latest scores of fixtures of matches
  - Create Application environment variables and save them in .env file in root directory
     ```
 	PORT=3000
-    DATABASE_URL=mongodb://host:port/dbName
+    MONGODB_URI=mongodb://host:port/dbName
     TEST_DATABASE_URL=mongodb://host:port/dbName
     SECRET_KEY=secreyKey
     REDIS_URL=redis://:@host:port
