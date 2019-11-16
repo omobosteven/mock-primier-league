@@ -48,6 +48,13 @@ fixtureSchema.index({ home_team: 1, away_team: 1 }, {
     partialFilterExpression: { status: 'pending' }
 });
 
+fixtureSchema.pre('find', function (next) {
+    this
+        .populate({ path: 'home_team', select: 'name code' })
+        .populate({ path: 'away_team', select: 'name code' });
+    next();
+});
+
 const Fixture = mongoose.model('Fixture', fixtureSchema);
 
 export default Fixture;

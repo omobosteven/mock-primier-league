@@ -32,6 +32,15 @@ const teamSchema = new Schema({
     }
 });
 
+teamSchema.post('remove', (doc) => {
+    doc.model('Fixture').deleteMany({
+        $or: [
+            { home_team: doc.id },
+            { away_team: doc.id }
+        ]
+    }).exec();
+});
+
 const Team = mongoose.model('Team', teamSchema);
 
 export default Team;

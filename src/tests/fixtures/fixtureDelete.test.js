@@ -63,8 +63,6 @@ describe('Test delete fixture endpoints', () => {
 
         expect(res.status).toEqual(200);
         expect(res.body.message).toBe('fixture deleted successfully');
-        expect(res.body.data.home_team.name).toBe('test team1');
-        expect(res.body.data.away_team.name).toBe('test team2');
         expect(await Fixture.countDocuments()).toBe(0);
         done();
     });

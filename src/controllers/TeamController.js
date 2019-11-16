@@ -87,14 +87,13 @@ class TeamController {
 
     static async deleteTeam(req, res, next) {
         try {
-            const { _id } = req.team;
+            const { team } = req;
 
-            const data = await Team.findByIdAndRemove({ _id });
+            await team.remove();
 
             return res.status(200).send({
                 status: 200,
                 message: 'team deleted successfully',
-                data
             });
         } catch (error) {
             /* istanbul ignore next */

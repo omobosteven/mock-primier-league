@@ -3,6 +3,7 @@ import Authenticate from '../middlewares/Authentication';
 import Checker from '../middlewares/Checker';
 import FixtureInputValidation from
     '../middlewares/validations/FixtureInputValidation';
+import QueryValidation from '../middlewares/validations/QueryValidation';
 import FixtureController from '../controllers/FixtureController';
 import limiter from '../middlewares/rateLimit';
 
@@ -25,6 +26,10 @@ const {
     validateCreateFixtureInput,
     validateUpdateFixtureInput
 } = FixtureInputValidation;
+
+const {
+    validateFixturesQueryParams
+} = QueryValidation;
 
 const {
     createFixture,
@@ -57,16 +62,6 @@ fixture.delete('/:fixture_id',
     verifyFixtureWithId,
     deleteFixture);
 
-fixture.get('/pending',
-    limiter,
-    getPendingCompletedFixtures,
-    getAllFixtures);
-
-fixture.get('/completed',
-    limiter,
-    getPendingCompletedFixtures,
-    getAllFixtures);
-
 fixture.get('/:fixture_id',
     limiter,
     verifyFixtureWithId,
@@ -74,6 +69,7 @@ fixture.get('/:fixture_id',
 
 fixture.get('',
     limiter,
+    validateFixturesQueryParams,
     getAllFixtures);
 
 export default fixture;
