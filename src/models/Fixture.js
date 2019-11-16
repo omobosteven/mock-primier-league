@@ -1,4 +1,9 @@
 import mongoose from 'mongoose';
+import Helper from '../helpers/Helper';
+
+const {
+    replaceWhiteSpacesWithHyphen
+} = Helper;
 
 const { Schema } = mongoose;
 
@@ -33,8 +38,7 @@ const fixtureSchema = new Schema({
         default: 'pending'
     },
     event_link: {
-        type: String,
-        required: true,
+        type: String
     }
 }, {
     timestamps: {
@@ -48,10 +52,24 @@ fixtureSchema.index({ home_team: 1, away_team: 1 }, {
     partialFilterExpression: { status: 'pending' }
 });
 
+
 fixtureSchema.pre('find', function (next) {
     this
         .populate({ path: 'home_team', select: 'name code' })
         .populate({ path: 'away_team', select: 'name code' });
+    next();
+});
+
+fixtureSchema.pre('save', function (next) {
+    const homeTeam = replaceWhiteSpacesWithHyphen(
+        this.home_team.name
+    );
+    const awayTeam = replaceWhiteSpacesWithHyphen(
+        this.away_team.name
+    );
+
+    this.event_link = `/api/v1/fixtures/${homeTeam
+    }-vs-${awayTeam}/${this.id}`;
     next();
 });
 

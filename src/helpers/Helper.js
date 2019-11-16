@@ -40,7 +40,7 @@ class Helper {
 
     static replaceWhiteSpacesWithHyphen(payload) {
         if (typeof (payload) === 'string') {
-            return payload.trim().replace(/\s+/g, '-');
+            return payload.trim().replace(/\s+/g, '-').trim();
         }
 
         return payload;

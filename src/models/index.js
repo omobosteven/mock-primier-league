@@ -4,8 +4,7 @@ import Team from './Team';
 import Fixture from './Fixture';
 
 const dbUrl = process.env.NODE_ENV === 'test'
-    ? process.env.TEST_DATABASE_URL
-    : (process.env.MONGODB_URI || process.env.DATABASE_URL);
+    ? process.env.TEST_DATABASE_URL : process.env.MONGODB_URI;
 
 const options = {
     useNewUrlParser: true,

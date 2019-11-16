@@ -1,11 +1,6 @@
 import models from '../models';
-import Helper from '../helpers/Helper';
 
 const { Fixture } = models;
-
-const {
-    replaceWhiteSpacesWithHyphen
-} = Helper;
 
 class FixtureController {
     static async createFixture(req, res, next) {
@@ -29,17 +24,7 @@ class FixtureController {
                 .populate('away_team', 'name code')
                 .execPopulate();
 
-            const homeTeam = replaceWhiteSpacesWithHyphen(
-                fixture.home_team.name
-            );
-            const awayTeam = replaceWhiteSpacesWithHyphen(
-                fixture.away_team.name
-            );
-
-            fixture.event_link = `/api/v1/fixtures/${homeTeam
-            }-vs-${awayTeam}/${fixture.id}`;
-
-            fixture.save();
+            await fixture.save();
 
             return res.status(201).send({
                 status: 201,
@@ -91,17 +76,7 @@ class FixtureController {
                 .populate('home_team', 'name code')
                 .populate('away_team', 'name code');
 
-            const homeTeam = replaceWhiteSpacesWithHyphen(
-                fixture.home_team.name
-            );
-            const awayTeam = replaceWhiteSpacesWithHyphen(
-                fixture.away_team.name
-            );
-
-            fixture.event_link = `/api/v1/fixtures/${homeTeam
-            }-vs-${awayTeam}/${fixture.id}`;
-
-            fixture.save();
+            await fixture.save();
 
             return res.status(200).send({
                 status: 200,
