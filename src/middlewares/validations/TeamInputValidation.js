@@ -22,9 +22,9 @@ class TeamInputValidaton {
         };
 
         const sanitization = {
-            name: 'lower_case',
-            code: 'upper_case',
-            venue_name: 'lower_case',
+            name: 'lower_case|trim',
+            code: 'upper_case|trim',
+            venue_name: 'lower_case|trim',
         };
 
         const messages = {
@@ -41,9 +41,9 @@ class TeamInputValidaton {
 
         const inputData = removeExtraWhiteSpaces(req.body);
 
+        sanitize(inputData, sanitization);
         validateAll(inputData, rules, messages)
             .then(() => {
-                sanitize(inputData, sanitization);
                 req.teamInput = inputData;
                 return next();
             })
@@ -65,8 +65,8 @@ class TeamInputValidaton {
 
         const sanitization = {
             name: 'lower_case|trim',
-            code: 'upper_case',
-            venue_name: 'trim',
+            code: 'upper_case|trim',
+            venue_name: 'lower_case|trim',
         };
 
 
@@ -83,9 +83,10 @@ class TeamInputValidaton {
 
         const inputData = removeExtraWhiteSpaces(req.body);
 
+
+        sanitize(inputData, sanitization);
         validateAll(inputData, rules, messages)
             .then(() => {
-                sanitize(inputData, sanitization);
                 req.teamInput = inputData;
                 return next();
             })
