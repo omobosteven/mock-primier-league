@@ -93,7 +93,7 @@ describe('Test retrieve fixture endpoints', () => {
 
     it('should retreive all pending fixtures', async (done) => {
         const res = await request(app)
-            .get('/api/v1/fixtures/pending')
+            .get('/api/v1/fixtures/?status=pending')
             .set('Authorization', `Bearer ${userToken}`)
             .set('Accept', 'application/json');
 
@@ -104,7 +104,7 @@ describe('Test retrieve fixture endpoints', () => {
 
     it('should retreive all completed fixtures', async (done) => {
         const res = await request(app)
-            .get('/api/v1/fixtures/completed')
+            .get('/api/v1/fixtures/?status=completed')
             .set('Authorization', `Bearer ${userToken}`)
             .set('Accept', 'application/json');
 
@@ -112,6 +112,18 @@ describe('Test retrieve fixture endpoints', () => {
         expect(res.body.count).toBe(1);
         done();
     });
+
+    it('should return empty data if status params is not pending/completed',
+        async (done) => {
+            const res = await request(app)
+                .get('/api/v1/fixtures/?status=tried')
+                .set('Authorization', `Bearer ${userToken}`)
+                .set('Accept', 'application/json');
+
+            expect(res.status).toEqual(200);
+            expect(res.body.count).toBe(0);
+            done();
+        });
 
     it('should return error if fixture does not exist', async (done) => {
         const res = await request(app)

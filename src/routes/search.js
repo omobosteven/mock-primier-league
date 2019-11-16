@@ -1,5 +1,5 @@
 import express from 'express';
-import SearchValidation from '../middlewares/validations/SearchValidation';
+import QueryValidation from '../middlewares/validations/QueryValidation';
 import SearchController from '../controllers/SearchController';
 
 const search = express.Router();
@@ -10,7 +10,7 @@ const {
 
 const {
     validateSearchQuery
-} = SearchValidation;
+} = QueryValidation;
 
 search.get('',
     validateSearchQuery,

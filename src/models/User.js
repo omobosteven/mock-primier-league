@@ -38,7 +38,6 @@ const userSchema = new Schema({
 });
 
 userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
     const hashedPassword = await hashPassword(this.password);
     this.password = hashedPassword;
 });

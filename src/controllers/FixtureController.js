@@ -116,16 +116,13 @@ class FixtureController {
 
     static async deleteFixture(req, res, next) {
         try {
-            const { _id } = req.fixture;
+            const { fixture } = req;
 
-            const data = await Fixture.findByIdAndRemove({ _id })
-                .populate('home_team', 'name code')
-                .populate('away_team', 'name code');
+            await fixture.remove();
 
             return res.status(200).send({
                 status: 200,
                 message: 'fixture deleted successfully',
-                data
             });
         } catch (error) {
             /* istanbul ignore next */
@@ -149,39 +146,14 @@ class FixtureController {
     }
 
     static async getAllFixtures(req, res, next) {
+        const { status } = req.query;
+        const query = status ? { status } : {};
+
         try {
-            const data = await Fixture.find()
-                .populate({
-                    path: 'home_team',
-                    select: 'name code',
-                })
-                .populate({
-                    path: 'away_team',
-                    select: 'name code'
-                });
+            const data = await Fixture.find(query);
             return res.status(200).send({
                 status: 200,
                 message: 'fixtures retrieved successfully',
-                count: data.length,
-                data
-            });
-        } catch (error) {
-            /* istanbul ignore next */
-            return next(error);
-        }
-    }
-
-    static async getPendingCompletedFixtures(req, res, next) {
-        try {
-            const status = req.path.slice(1);
-            const data = await Fixture.find({
-                status
-            })
-                .populate('home_team', 'name code')
-                .populate('away_team', 'name code');
-            return res.status(200).send({
-                status: 200,
-                message: `${status} fixtures retrieved`,
                 count: data.length,
                 data
             });
