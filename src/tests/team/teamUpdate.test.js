@@ -1,12 +1,10 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 import app from '../../app';
-import Helper from '../../helpers/Helper';
 import models from '../../models';
 import testData from '../testData';
 
 const { User, Team } = models;
-const { generateToken } = Helper;
 
 const {
     user, admin, teamTest1, teamTest2
@@ -26,14 +24,8 @@ describe('Test update team endpoints', () => {
         const team1 = await Team.create(teamTest1);
         const team2 = await Team.create(teamTest2);
 
-        userToken = generateToken({
-            user: testUser.id,
-            admin: testUser.is_admin
-        });
-        adminToken = generateToken({
-            user: testAdmin.id,
-            admin: testAdmin.is_admin
-        });
+        userToken = testUser.generateAuthToken();
+        adminToken = testAdmin.generateAuthToken();
 
         team1Id = team1.id;
         team2Id = team2.id;

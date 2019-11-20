@@ -62,7 +62,7 @@ class Checker {
         }
     }
 
-    static async checkDuplicateFixture(req, res, next) {
+    static async checkPendingFixture(req, res, next) {
         try {
             const {
                 fixture_id: fixtureId
@@ -70,10 +70,10 @@ class Checker {
 
             const {
                 home_team: homeTeamId,
-                away_team: awayTeamId
+                away_team: awayTeamId,
             } = req.fixtureInput;
 
-            const fixture = await Fixture.findOne({
+            const duplicateFixture = await Fixture.findOne({
                 $and: [
                     { home_team: homeTeamId },
                     { away_team: awayTeamId },
@@ -81,7 +81,7 @@ class Checker {
                 ]
             });
 
-            if (fixture) {
+            if (duplicateFixture) {
                 return res.status(409).send({
                     status: 409,
                     message: 'similar fixture has not been completed'
@@ -110,7 +110,7 @@ class Checker {
                 });
             }
 
-            req.decodedUser = user;
+            req.user = user;
             return next();
         } catch (error) {
             /* istanbul ignore next */
@@ -119,9 +119,9 @@ class Checker {
     }
 
     static verifyAdminRole(req, res, next) {
-        const { admin } = req.decodedUser;
+        const { isAdmin } = req.decodedUser;
 
-        if (!admin) {
+        if (!isAdmin) {
             return res.status(403).send({
                 status: 403,
                 message: 'permission denied'

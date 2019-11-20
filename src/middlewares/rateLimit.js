@@ -19,10 +19,10 @@ const limiter = rateLimit({
     max,
     skip: (req) => {
         const {
-            admin
+            isAdmin
         } = req.decodedUser;
 
-        return admin;
+        return isAdmin;
     },
     keyGenerator: (req) => {
         const {

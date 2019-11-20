@@ -1,5 +1,8 @@
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import Helper from '../helpers/Helper';
+
+const secret = process.env.SECRET_KEY;
 
 const { Schema } = mongoose;
 
@@ -37,9 +40,18 @@ const userSchema = new Schema({
     }
 });
 
+userSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign(
+        { id: this._id, isAdmin: this.is_admin },
+        secret, { expiresIn: '24h' }
+    );
+    return token;
+};
+
 userSchema.pre('save', async function (next) {
     const hashedPassword = await hashPassword(this.password);
     this.password = hashedPassword;
+    next();
 });
 
 const User = mongoose.model('User', userSchema);

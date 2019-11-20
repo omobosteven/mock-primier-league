@@ -1,12 +1,10 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 import app from '../../app';
-import Helper from '../../helpers/Helper';
 import models from '../../models';
 import testData from '../testData';
 
 const { User, Team, Fixture } = models;
-const { generateToken } = Helper;
 
 const {
     user, admin, teamTest1, teamTest2,
@@ -39,14 +37,8 @@ describe('Test delete fixture endpoints', () => {
 
         fixture1Id = fixture1.id;
 
-        userToken = generateToken({
-            user: testUser.id,
-            admin: testUser.is_admin
-        });
-        adminToken = generateToken({
-            user: testAdmin.id,
-            admin: testAdmin.is_admin
-        });
+        userToken = testUser.generateAuthToken();
+        adminToken = testAdmin.generateAuthToken();
     });
 
     afterAll((done) => {

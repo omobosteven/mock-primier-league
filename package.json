@@ -54,8 +54,11 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "verbose": true,
     "collectCoverage": true,
-    "setupFiles": ["./src/tests/setUpTest.js"],
+    "setupFiles": [
+      "./src/tests/setUpTest.js"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/dist/"

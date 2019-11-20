@@ -2,12 +2,10 @@ import 'dotenv/config';
 import request from 'supertest';
 import mongoose from 'mongoose';
 import app from '../../app';
-import Helper from '../../helpers/Helper';
 import models from '../../models';
 import testData from '../testData';
 
 const { User, Team } = models;
-const { generateToken } = Helper;
 
 const {
     user, teamTest1, teamTest2
@@ -24,10 +22,7 @@ describe('Test retrieve team endpoints', () => {
         const team1 = await Team.create(teamTest1);
         await Team.create(teamTest2);
 
-        userToken = generateToken({
-            user: testUser.id,
-            admin: testUser.is_admin
-        });
+        userToken = testUser.generateAuthToken();
 
         team1Id = team1.id;
     });

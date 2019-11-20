@@ -32,8 +32,8 @@ const teamSchema = new Schema({
     }
 });
 
-teamSchema.post('remove', (doc) => {
-    doc.model('Fixture').deleteMany({
+teamSchema.post('remove', async (doc) => {
+    await doc.model('Fixture').deleteMany({
         $or: [
             { home_team: doc.id },
             { away_team: doc.id }

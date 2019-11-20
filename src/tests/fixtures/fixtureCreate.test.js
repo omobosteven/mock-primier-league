@@ -1,12 +1,10 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 import app from '../../app';
-import Helper from '../../helpers/Helper';
 import models from '../../models';
 import testData from '../testData';
 
 const { User, Team, Fixture } = models;
-const { generateToken } = Helper;
 
 const {
     user, admin, teamTest1, teamTest2, teamTest3
@@ -39,14 +37,8 @@ describe('Test create fixture endpoints', () => {
             event_date: new Date('2019-10-02T17:00')
         });
 
-        userToken = generateToken({
-            user: testUser.id,
-            admin: testUser.is_admin
-        });
-        adminToken = generateToken({
-            user: testAdmin.id,
-            admin: testAdmin.is_admin
-        });
+        userToken = testUser.generateAuthToken();
+        adminToken = testAdmin.generateAuthToken();
     });
 
     afterAll((done) => {

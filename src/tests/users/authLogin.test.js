@@ -40,7 +40,7 @@ describe('Test auth Endpoint', () => {
 
     it('should login admin successfully', async (done) => {
         const res = await request(app)
-            .post('/api/v1/auth/admin/login')
+            .post('/api/v1/auth/login')
             .set('Accept', 'application/json')
             .send({
                 username: 'admin',

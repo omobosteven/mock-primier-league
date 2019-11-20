@@ -1,23 +1,29 @@
 import 'dotenv/config';
 import Authenticate from '../../middlewares/Authentication';
-import Helper from '../../helpers/Helper';
+import models from '../../models';
+import testData from '../testData';
+
+const { User } = models;
+
+const {
+    user
+} = testData;
 
 const {
     checkTokenExist,
     verifyToken
 } = Authenticate;
 
-const {
-    generateToken
-} = Helper;
-
 let mockRequest;
 let mockResponse;
 let mockNext;
-let bearerToken;
+let jwtToken;
 
 describe('Test authentication middleware', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
+        const testUser = new User(user);
+        jwtToken = testUser.generateAuthToken();
+
         mockRequest = (token) => {
             return {
                 headers: { authorization: token },
@@ -31,11 +37,6 @@ describe('Test authentication middleware', () => {
             return res;
         };
         mockNext = jest.fn().mockReturnThis();
-
-        bearerToken = generateToken({
-            user: 12345,
-            admin: false
-        });
     });
 
     afterEach(() => {
@@ -64,7 +65,7 @@ describe('Test authentication middleware', () => {
     });
 
     it('should call res with 401 if token is not valid', async (done) => {
-        const req = mockRequest('Bearer e3ygfdbsndgeenbv');
+        const req = mockRequest('e3ygfdbsndgeenbv');
         const res = mockResponse();
         const next = mockNext;
 
@@ -75,7 +76,7 @@ describe('Test authentication middleware', () => {
     });
 
     it('should call next if token is valid', async (done) => {
-        const req = mockRequest(bearerToken);
+        const req = mockRequest(jwtToken);
         const res = mockResponse();
         const next = mockNext;
 
