@@ -14,20 +14,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(routes);
 
-app.use((req, res, next) => {
-    return res.status(404).send({
-        status: 400,
-        message: `Route ${req.method} ${req.url} not found.`
-    });
-});
-
-app.use((error, req, res, next) => {
-    return res.status(500).send({
-        status: 500,
-        message: 'internal server error'
-    });
-});
-
 connectDb();
 
 if (process.env.NODE_ENV !== 'test') {

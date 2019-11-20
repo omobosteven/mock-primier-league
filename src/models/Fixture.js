@@ -61,12 +61,8 @@ fixtureSchema.pre('find', function (next) {
 });
 
 fixtureSchema.pre('save', function (next) {
-    const homeTeam = replaceWhiteSpacesWithHyphen(
-        this.home_team.name
-    );
-    const awayTeam = replaceWhiteSpacesWithHyphen(
-        this.away_team.name
-    );
+    const homeTeam = replaceWhiteSpacesWithHyphen(this.home_team.name);
+    const awayTeam = replaceWhiteSpacesWithHyphen(this.away_team.name);
 
     this.event_link = `/api/v1/fixtures/${homeTeam
     }-vs-${awayTeam}/${this.id}`;

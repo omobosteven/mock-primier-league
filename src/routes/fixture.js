@@ -12,7 +12,7 @@ const fixture = express.Router();
 const {
     verifyAdminRole,
     checkHomeAwayTeamExist,
-    checkDuplicateFixture,
+    checkPendingFixture,
     verifyFixtureWithId
 } = Checker;
 
@@ -45,7 +45,7 @@ fixture.post('/',
     verifyAdminRole,
     validateCreateFixtureInput,
     checkHomeAwayTeamExist,
-    checkDuplicateFixture,
+    checkPendingFixture,
     createFixture);
 
 fixture.patch('/:fixture_id',
@@ -53,7 +53,7 @@ fixture.patch('/:fixture_id',
     verifyFixtureWithId,
     validateUpdateFixtureInput,
     checkHomeAwayTeamExist,
-    checkDuplicateFixture,
+    checkPendingFixture,
     updateFixture);
 
 fixture.delete('/:fixture_id',

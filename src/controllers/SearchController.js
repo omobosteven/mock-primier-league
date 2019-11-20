@@ -23,15 +23,7 @@ class SearchController {
                     { home_team: teamIds },
                     { away_team: teamIds }
                 ]
-            })
-                .populate({
-                    path: 'home_team',
-                    select: 'name code',
-                })
-                .populate({
-                    path: 'away_team',
-                    select: 'name code'
-                });
+            });
 
             return res.status(200).send({
                 status: 200,

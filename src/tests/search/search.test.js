@@ -9,10 +9,9 @@ const { User, Team, Fixture } = models;
 const { generateToken } = Helper;
 
 const {
-    user, teamTest1, teamTest2, teamTest3
+    teamTest1, teamTest2, teamTest3
 } = testData;
 
-let userToken;
 let team1Id;
 let team2Id;
 let team3Id;
@@ -22,7 +21,6 @@ describe('Test retrieve fixture endpoints', () => {
         await User.deleteMany({});
         await Team.deleteMany({});
         await Fixture.deleteMany({});
-        const testUser = await User.create(user);
         const team1 = await Team.create(teamTest1);
         const team2 = await Team.create(teamTest2);
         const team3 = await Team.create(teamTest3);
@@ -41,11 +39,6 @@ describe('Test retrieve fixture endpoints', () => {
             away_team: team3Id,
             event_date: new Date('2019-10-02T17:00')
         });
-
-        userToken = generateToken({
-            user: testUser.id,
-            admin: testUser.is_admin
-        });
     });
 
     afterAll((done) => {
@@ -56,7 +49,6 @@ describe('Test retrieve fixture endpoints', () => {
     it('should get teams and fixtures', async (done) => {
         const res = await request(app)
             .get('/api/v1/search?q=team2')
-            .set('Authorization', `Bearer ${userToken}`)
             .set('Accept', 'application/json');
 
         expect(res.status).toEqual(200);
@@ -69,7 +61,6 @@ describe('Test retrieve fixture endpoints', () => {
     it('should return error if search query is not provided', async (done) => {
         const res = await request(app)
             .get('/api/v1/search?q=')
-            .set('Authorization', `Bearer ${userToken}`)
             .set('Accept', 'application/json');
 
         expect(res.status).toEqual(400);

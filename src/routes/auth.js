@@ -17,7 +17,9 @@ const {
 } = Checker;
 
 const {
-    signupUser
+    signupUser,
+    signupAdmin,
+    loginUser,
 } = Users;
 
 auth.post('/register',
@@ -25,9 +27,14 @@ auth.post('/register',
     checkDuplicateUser,
     signupUser);
 
+auth.post('/admin/register',
+    validateSignupInput,
+    checkDuplicateUser,
+    signupAdmin);
+
 auth.post('/login',
     validateLoginInput,
     checkUsernamePassword,
-    Users.loginUser);
+    loginUser);
 
 export default auth;

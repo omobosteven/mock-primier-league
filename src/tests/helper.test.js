@@ -4,7 +4,6 @@ import Helper from '../helpers/Helper';
 const {
     hashPassword,
     comparePassword,
-    generateToken,
     replaceWhiteSpacesWithHyphen,
     removeExtraWhiteSpaces,
     verifyMongooseObjectId
@@ -19,21 +18,10 @@ describe('Test helper functions', () => {
         password = hashedPassword;
     });
 
-    it('should generate token', (done) => {
-        const token = generateToken({
-            user: 12345,
-            admin: false
-        });
-
-        expect(token).toBeDefined();
-        done();
-    });
-
     it('should hash a password', async (done) => {
         const hashedPassword = await hashPassword('testpass');
 
         expect(hashedPassword).not.toBe('testpass');
-        expect(hashedPassword).toBeTruthy();
         done();
     });
 
@@ -81,7 +69,7 @@ describe('Test helper functions', () => {
         done();
     });
 
-    it('should return a value if ObjectId is valid', (done) => {
+    it('should return undefined if ObjectId is not valid', (done) => {
         const id = '12345fdbdmfndn';
 
         const documentId = verifyMongooseObjectId(id);
