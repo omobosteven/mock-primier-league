@@ -31,7 +31,7 @@
     "express-rate-limit": "^5.0.0",
     "indicative": "^7.2.3",
     "ioredis": "^4.14.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.7.7",
     "rate-limit-redis": "^1.6.0",
     "redis": "^2.8.0"
